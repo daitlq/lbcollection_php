@@ -2,7 +2,8 @@ window.Router = Backbone.Router.extend({
 
 	routes: {
 		"": "home",
-		"contact": "contact"
+		"contact": "contact",
+		"books": "getListBook"
 	},
 
 	initialize: function() {
@@ -31,10 +32,25 @@ window.Router = Backbone.Router.extend({
 			this.contactView.render();
 		}
 		$("#main-content").html(this.contactView.el);
+	},
+	
+	getListBook: function() {
+		if (!this.bookListView) {
+			this.bookListView = new BookListView();
+			this.bookListView.render();
+		}
+		$("#main-content").html(this.bookListView.el);
 	}
 });
 
-templateLoader.load(["BaseView", "HomeView", "ContactView"],
+var mapTemplates = {
+	"BaseView"			: "BaseView.html",
+	"HomeView"			: "HomeView.html",
+	"ContactView"		: "ContactView.html",
+	"BookListView"		: "books/BookListView.html"
+};
+
+templateLoader.load(["BaseView", "HomeView", "ContactView", "BookListView"],
 	function () {
 		app = new Router();
 		Backbone.history.start();
