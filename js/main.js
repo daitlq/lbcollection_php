@@ -36,10 +36,18 @@ window.Router = Backbone.Router.extend({
 	
 	getListBook: function() {
 		if (!this.bookListView) {
-			this.bookListView = new BookListView();
-			this.bookListView.render();
+			var bookList = new BookCollection();
+			var self = this;
+			bookList.fetch({
+				success: function(books) {
+					self.bookListView = new BookListView({collection: books});
+					self.bookListView.render();
+					$("#main-content").html(self.bookListView.el);
+				}
+			});
 		}
-		$("#main-content").html(this.bookListView.el);
+		else
+			$("#main-content").html(this.bookListView.el);
 	}
 });
 
@@ -47,10 +55,11 @@ var mapTemplates = {
 	"BaseView"			: "BaseView.html",
 	"HomeView"			: "HomeView.html",
 	"ContactView"		: "ContactView.html",
-	"BookListView"		: "books/BookListView.html"
+	"BookListView"		: "books/BookListView.html",
+	"BookListItemView"	: "books/BookListItemView.html"
 };
 
-templateLoader.load(["BaseView", "HomeView", "ContactView", "BookListView"],
+templateLoader.load(["BaseView", "HomeView", "ContactView", "BookListView", "BookListItemView"],
 	function () {
 		app = new Router();
 		Backbone.history.start();
