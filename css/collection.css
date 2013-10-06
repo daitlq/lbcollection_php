@@ -53,6 +53,11 @@
     text-transform: uppercase;
 }
 
+.book-item .title .control {
+    float: right;
+	color: #0099FF;
+}
+
 .book-item .header {
     margin: 10px 0;
 	clear: both;

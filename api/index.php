@@ -7,6 +7,7 @@ $app = new \Slim\Slim();
 
 $app->get('/books', 'getAllBooks');
 $app->get('/books/:id',	'getBook');
+$app->put('/books/:id', 'updateBook');
 
 $app->run();
 
@@ -30,9 +31,33 @@ function getBook($id) {
 		$stmt = $db->prepare($sql);  
 		$stmt->bindParam("id", $id);
 		$stmt->execute();
-		$wine = $stmt->fetchObject();  
+		$book = $stmt->fetchObject();  
 		$db = null;
-		echo json_encode($wine); 
+		echo json_encode($book); 
+	} catch(PDOException $e) {
+		echo '{"error":{"text":'. $e->getMessage() .'}}'; 
+	}
+}
+
+function updateBook($id) {
+	$request = \Slim\Slim::getInstance()->request();
+	$body = $request->getBody();
+	$book = json_decode($body);
+	$sql = "UPDATE book SET title=:title, category=:category, author=:author, publisher=:publisher, language=:language, publication_date=:publication_date, description=:description WHERE id=:id";
+	try {
+		$db = getConnection();
+		$stmt = $db->prepare($sql);  
+		$stmt->bindParam("title", $book->title);
+		$stmt->bindParam("category", $book->category);
+		$stmt->bindParam("author", $book->author);
+		$stmt->bindParam("publisher", $book->publisher);
+		$stmt->bindParam("language", $book->language);
+		$stmt->bindParam("publication_date", $book->publication_date);
+		$stmt->bindParam("description", $book->description);
+		$stmt->bindParam("id", $id);
+		$stmt->execute();
+		$db = null;
+		echo json_encode($book); 
 	} catch(PDOException $e) {
 		echo '{"error":{"text":'. $e->getMessage() .'}}'; 
 	}

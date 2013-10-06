@@ -5,6 +5,7 @@ window.Router = Backbone.Router.extend({
 		"contact"	: "contact",
 		"books"		: "getListBook",
 		"books/:id"	: "getBook",
+		"books/edit/:id" : "editBook",
 	},
 
 	initialize: function() {
@@ -58,6 +59,15 @@ window.Router = Backbone.Router.extend({
 				$("#main-content").html(new BookView({model: data}).render().el);
 			}
 		});
+	},
+	
+	editBook: function(id) {
+		var book = new Book({id: id});
+		book.fetch({
+			success: function (data) {
+				$("#main-content").html(new BookEditView({model: data}).render().el);
+			}
+		});
 	}
 });
 
@@ -67,10 +77,14 @@ var mapTemplates = {
 	"ContactView"		: "ContactView.html",
 	"BookListView"		: "books/BookListView.html",
 	"BookListItemView"	: "books/BookListItemView.html",
-	"BookView"			: "books/BookView.html"
+	"BookView"			: "books/BookView.html",
+	"BookEditView"		: "books/BookEditView.html"
 };
 
-templateLoader.load(["BaseView", "HomeView", "ContactView", "BookListView", "BookListItemView", "BookView"],
+utils.loadTemplate([
+						"BaseView", "HomeView", "ContactView", 
+						"BookListView", "BookListItemView", "BookView", "BookEditView"
+					],
 	function () {
 		app = new Router();
 		Backbone.history.start();

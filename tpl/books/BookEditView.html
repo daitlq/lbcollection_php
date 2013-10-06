@@ -1,0 +1,106 @@
+<div id="breadcrumbs">
+	<ul class="breadcrumb">
+		<li>
+			<i class="icon-home"></i>
+			<a href="#">Home</a>
+
+			<span class="divider">
+				<i class="icon-angle-right"></i>
+			</span>
+		</li>
+		<li>
+			Collection
+			<span class="divider">
+				<i class="icon-angle-right"></i>
+			</span>
+		</li>
+		<li>
+			<a href="#books">Books</a>
+			<span class="divider">
+				<i class="icon-angle-right"></i>
+			</span>
+		</li>
+		<li>
+			<i class="control icon-edit"></i>
+			<%= title %>
+		</li>
+	</ul><!--.breadcrumb-->
+</div><!--.breadcrumbs-->
+
+<div class="row status-bar">
+    <div class="span12">
+        <div class="alert alert-success" style="display: none">
+            <b>Success!</b> Wine saved successfully
+        </div>
+    </div>
+</div>
+
+<div id="page-content" class="clearfix">
+	<div>
+		<div class="control-group">
+			<label for="id" class="control-label">ID:</label>
+			<div class="controls">
+				<input id="id" name="id" type="text" value="<%= id %>" disabled/>
+			</div>
+		</div>
+		
+		<div class="control-group">
+			<label for="title" class="control-label">Title:</label>
+			<div class="controls">
+				<input id="title" name="title" type="text" value="<%= title %>"/>
+				<span class="help-inline"></span>
+			</div>
+		</div>
+		
+		<div class="control-group">
+			<label for="category" class="control-label">Category:</label>
+			<div class="controls">
+				<input id="category" name="category" type="text" value="<%= category %>"/>
+				<span class="help-inline"></span>
+			</div>
+		</div>
+
+		<div class="control-group">
+			<label for="author" class="control-label">Author:</label>
+			<div class="controls">
+				<input id="author" name="author" type="text" value="<%= author %>"/>
+				<span class="help-inline"></span>
+			</div>
+		</div>
+		
+		<div class="control-group">
+			<label for="publisher" class="control-label">Publisher:</label>
+			<div class="controls">
+				<input id="publisher" name="publisher" type="text" value="<%= publisher %>"/>
+				<span class="help-inline"></span>
+			</div>
+		</div>
+		
+		<div class="control-group">
+			<label for="language" class="control-label">Language:</label>
+			<div class="controls">
+				<input id="language" name="language" type="text" value="<%= language %>"/>
+				<span class="help-inline"></span>
+			</div>
+		</div>
+		
+		<div class="control-group">
+			<label for="publication_date" class="control-label">Publication Date:</label>
+			<div class="controls">
+				<input id="publication_date" name="publication_date" type="text" value="<%= publication_date %>"/>
+				<span class="help-inline"></span>
+			</div>
+		</div>
+		
+		<div class="control-group">
+			<label for="description" class="control-label">Description:</label>
+			<div class="controls">
+				<input id="description" name="description" type="text" value="<%= description %>"/>
+				<span class="help-inline"></span>
+			</div>
+		</div>
+		
+		<button class="save">Save</button>
+		<button class="cancel">Cancel</button>
+	</div>
+</div><!--/#page-book-->
