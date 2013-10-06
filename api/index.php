@@ -8,6 +8,7 @@ $app = new \Slim\Slim();
 $app->get('/books', 'getAllBooks');
 $app->get('/books/:id',	'getBook');
 $app->put('/books/:id', 'updateBook');
+$app->delete('/books/:id',	'deleteBook');
 
 $app->run();
 
@@ -31,7 +32,7 @@ function getBook($id) {
 		$stmt = $db->prepare($sql);  
 		$stmt->bindParam("id", $id);
 		$stmt->execute();
-		$book = $stmt->fetchObject();  
+		$book = $stmt->fetchObject();
 		$db = null;
 		echo json_encode($book); 
 	} catch(PDOException $e) {
@@ -60,6 +61,20 @@ function updateBook($id) {
 		echo json_encode($book); 
 	} catch(PDOException $e) {
 		echo '{"error":{"text":'. $e->getMessage() .'}}'; 
+	}
+}
+
+function deleteBook($id) {
+	$sql = "DELETE FROM book WHERE id=:id";
+	try {
+		$db = getConnection();
+		$stmt = $db->prepare($sql);  
+		$stmt->bindParam("id", $id);
+		$stmt->execute();
+		$db = null;
+		echo '{"success":{"id":'. $id .'}}';
+	} catch(PDOException $e) {
+		echo '{"error":{"text":'. $e->getMessage() .'}}';
 	}
 }
 

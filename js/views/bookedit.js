@@ -2,7 +2,7 @@ window.BookEditView = Backbone.View.extend({
 
 	events: {
 		"change"        : "change",
-        "click .save"   : "updateBook",
+        "click .save"   : "updateBook"
     },
 	
 	initialize: function() {
@@ -34,7 +34,6 @@ window.BookEditView = Backbone.View.extend({
     },
 	
 	updateBook: function() {
-		var self = this;
 		this.model.save(null, {
 			success: function (model) {
 				utils.showAlert('Success!', 'Book saved successfully', 'alert-success');
