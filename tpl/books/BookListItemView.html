@@ -1,6 +1,16 @@
-<a href="#books" class="thumbnail plain">
-	<img src="css/images/admin.png" height="150" width="125" alt="">
-	<h5><%= name %></h5>
-	<p><%= year %><br/>
-	</p>
-</a>
+<li class="span3">
+	<div class="thumbnail">
+		<h4><%= name %></h4>
+		<a href="#books/<%= id %>">
+			<img src="css/images/admin.png" height="150" width="125" alt="">
+		</a>
+		<p><%= year %></p>
+		<div class="btn-toolbar">
+			<div class="btn-group">
+				<span class="btn"><i class="icon-envelope"></i></span>
+				<span class="btn"><i class="icon-link"></i></span>
+				<span class="btn"><i class="icon-globe"></i></span>
+			</div>
+		</div>
+	</div>
+</li>

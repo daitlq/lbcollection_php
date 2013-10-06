@@ -6,6 +6,7 @@ require 'Slim/Slim.php';
 $app = new \Slim\Slim();
 
 $app->get('/books', 'getAllBooks');
+$app->get('/books/:id',	'getBook');
 
 $app->run();
 
@@ -17,6 +18,21 @@ function getAllBooks() {
 		$wines = $stmt->fetchAll(PDO::FETCH_OBJ);
 		$db = null;
 		echo json_encode($wines);
+	} catch(PDOException $e) {
+		echo '{"error":{"text":'. $e->getMessage() .'}}'; 
+	}
+}
+
+function getBook($id) {
+	$sql = "SELECT * FROM book WHERE id=:id";
+	try {
+		$db = getConnection();
+		$stmt = $db->prepare($sql);  
+		$stmt->bindParam("id", $id);
+		$stmt->execute();
+		$wine = $stmt->fetchObject();  
+		$db = null;
+		echo json_encode($wine); 
 	} catch(PDOException $e) {
 		echo '{"error":{"text":'. $e->getMessage() .'}}'; 
 	}

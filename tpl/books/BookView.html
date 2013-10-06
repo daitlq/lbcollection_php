@@ -1,0 +1,55 @@
+<div id="breadcrumbs">
+	<ul class="breadcrumb">
+		<li>
+			<i class="icon-home"></i>
+			<a href="#">Home</a>
+
+			<span class="divider">
+				<i class="icon-angle-right"></i>
+			</span>
+		</li>
+		<li>
+			Collection
+			<span class="divider">
+				<i class="icon-angle-right"></i>
+			</span>
+		</li>
+		<li>
+			<a href="#books">Books</a>
+			<span class="divider">
+				<i class="icon-angle-right"></i>
+			</span>
+		</li>
+		<li><%= name %></li>
+	</ul><!--.breadcrumb-->
+</div>
+
+<div id="page-content" class="clearfix">
+	<div class="row-fluid">
+		<div class="span4">
+			<img height="300" src=""/>
+		</div>
+		<div class="span8">
+			<img height="300" src=""/>
+		</div>
+	</div>
+	<div class="form-left-col">
+		<label>ID:</label>
+		<input id="wineId" name="id" type="text" value="<%= id %>" disabled />
+
+		<label>Name:</label>
+		<input type="text" id="name" name="name" value="<%= name %>" required/>
+
+		<label>Year:</label>
+		<input type="text" id="year" name="year"  value="<%= year %>"/>
+
+		<button class="save">Save</button>
+		<button class="delete">Delete</button>
+	</div>
+
+	<div class="form-right-col">
+		
+		<label>Description:</label>
+		<textarea id="description" name="description"><%= description %></textarea>
+	</div>
+</div><!--/#page-book-->
