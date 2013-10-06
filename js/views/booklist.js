@@ -1,10 +1,10 @@
 window.BookListView = Backbone.View.extend({
 
-	initialize:function() {
+	initialize: function() {
 		debug('Initializing Book View');
 	},
 
-	render:function() {
+	render: function() {
 		var books = this.collection.models;
 		
 		var length = books.length;
@@ -18,7 +18,7 @@ window.BookListView = Backbone.View.extend({
 		}
 		
 		return this;
-	}
+	},
 });
 
 window.BookListItemView = Backbone.View.extend({
@@ -34,6 +34,7 @@ window.BookListItemView = Backbone.View.extend({
 
 	render: function() {
 		$(this.el).html(this.template(this.model.toJSON()));
+		$(".toolTipgroup a", this.el).tooltip();
 		return this;
 	}
 

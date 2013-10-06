@@ -20,36 +20,32 @@
 				<i class="icon-angle-right"></i>
 			</span>
 		</li>
-		<li><%= name %></li>
+		<li><%= title %></li>
 	</ul><!--.breadcrumb-->
 </div>
 
 <div id="page-content" class="clearfix">
-	<div class="row-fluid">
-		<div class="span4">
-			<img height="300" src=""/>
+	<div id="book" class="book-item" style="margin-bottom:0;">
+		<div class="title"><%= title %></div>
+		<div class="header">
+			<div class="cover">
+				<a href="" title="">
+					<img src="css/images/no_image.jpg" alt=""/>
+				</a>
+			</div>
+			<div class="bookinfo">
+				<p>
+					Author: <%= author %> <br/>
+					Category: <%= category %> <br/>
+					Publisher: <%= publisher %><br/>				
+				</p>
+			</div>
 		</div>
-		<div class="span8">
-			<img height="300" src=""/>
+		<div class="desc">
+			<h4>Book Description</h4>
+			<p>
+				<%= description %> <br/>
+			</p>
 		</div>
-	</div>
-	<div class="form-left-col">
-		<label>ID:</label>
-		<input id="wineId" name="id" type="text" value="<%= id %>" disabled />
-
-		<label>Name:</label>
-		<input type="text" id="name" name="name" value="<%= name %>" required/>
-
-		<label>Year:</label>
-		<input type="text" id="year" name="year"  value="<%= year %>"/>
-
-		<button class="save">Save</button>
-		<button class="delete">Delete</button>
-	</div>
-
-	<div class="form-right-col">
-		
-		<label>Description:</label>
-		<textarea id="description" name="description"><%= description %></textarea>
 	</div>
 </div><!--/#page-book-->
