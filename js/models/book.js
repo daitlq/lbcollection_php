@@ -2,6 +2,17 @@ window.Book = Backbone.Model.extend({
 
 	urlRoot: "api/index.php/books",
 
+	defaults: {
+		id: null,
+		title: "",
+		category: "",
+		author: "",
+		publisher: "",
+		language: "",
+		publication_date: "",
+		description: ""
+	},
+	
 	initialize: function() {
 		this.validators = {};
 

@@ -4,6 +4,7 @@ window.Router = Backbone.Router.extend({
 		"": "home",
 		"contact"	: "contact",
 		"books"		: "getListBook",
+		"books/add" : "addBook",
 		"books/:id"	: "getBook",
 		"books/edit/:id" : "editBook",
 	},
@@ -59,6 +60,11 @@ window.Router = Backbone.Router.extend({
 				$("#main-content").html(new BookView({model: data}).render().el);
 			}
 		});
+	},
+	
+	addBook: function() {
+		var book = new Book();
+		$('#main-content').html(new BookEditView({model: book}).render().el);
 	},
 	
 	editBook: function(id) {

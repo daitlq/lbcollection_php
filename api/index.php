@@ -7,6 +7,7 @@ $app = new \Slim\Slim();
 
 $app->get('/books', 'getAllBooks');
 $app->get('/books/:id',	'getBook');
+$app->post('/books', 'addBook');
 $app->put('/books/:id', 'updateBook');
 $app->delete('/books/:id',	'deleteBook');
 
@@ -40,10 +41,34 @@ function getBook($id) {
 	}
 }
 
+function addBook() {
+	//error_log('addBook\n', 3, '/var/tmp/php.log');
+	$request = \Slim\Slim::getInstance()->request();
+	$book = json_decode($request->getBody());
+	$sql = "INSERT INTO book (title, category, author, publisher, language, publication_date, description) VALUES (:title, :category, :author, :publisher, :language, :publication_date, :description)";
+	try {
+		$db = getConnection();
+		$stmt = $db->prepare($sql);  
+		$stmt->bindParam("title", $book->title);
+		$stmt->bindParam("category", $book->category);
+		$stmt->bindParam("author", $book->author);
+		$stmt->bindParam("publisher", $book->publisher);
+		$stmt->bindParam("language", $book->language);
+		$stmt->bindParam("publication_date", $book->publication_date);
+		$stmt->bindParam("description", $book->description);
+		$stmt->execute();
+		$book->id = $db->lastInsertId();
+		$db = null;
+		echo json_encode($book); 
+	} catch(PDOException $e) {
+		//error_log($e->getMessage(), 3, '/var/tmp/php.log');
+		echo '{"error":{"text":'. $e->getMessage() .'}}'; 
+	}
+}
+
 function updateBook($id) {
 	$request = \Slim\Slim::getInstance()->request();
-	$body = $request->getBody();
-	$book = json_decode($body);
+	$book = json_decode($request->getBody());
 	$sql = "UPDATE book SET title=:title, category=:category, author=:author, publisher=:publisher, language=:language, publication_date=:publication_date, description=:description WHERE id=:id";
 	try {
 		$db = getConnection();

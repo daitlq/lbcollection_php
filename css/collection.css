@@ -53,9 +53,15 @@
     text-transform: uppercase;
 }
 
-.book-item .title .control {
+.book-item .title .btn-control {
     float: right;
+	color: red;
+	margin-left: 10px;
+}
+
+.book-item .title a>[class*="icon-"]:hover {
 	color: #0099FF;
+	text-decoration:none;
 }
 
 .book-item .header {

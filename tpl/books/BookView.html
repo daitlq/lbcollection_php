@@ -28,8 +28,8 @@
 	<div id="book" class="book-item" style="margin-bottom:0;">
 		<div class="title">
 			<%= title %>
-			<a href="#books/edit/<%= id %>"><i class="control icon-edit"></i></a>
-			<a href=""><i class="control icon-trash"></i></a>
+			<a href="" title="Delete this book"><i class="btn-control icon-trash"></i></a>
+			<a href="#books/edit/<%= id %>" title="Edit this book"><i class="btn-control icon-edit"></i></a>
 		</div>
 		<div class="header">
 			<div class="cover">
@@ -39,9 +39,11 @@
 			</div>
 			<div class="bookinfo">
 				<p>
-					Author: <%= author %> <br/>
 					Category: <%= category %> <br/>
-					Publisher: <%= publisher %><br/>				
+					Author: <%= author %> <br/>
+					Publisher: <%= publisher %><br/>
+					Language: <%= language %><br/>
+					Publication Date: <%= publication_date %><br/>
 				</p>
 			</div>
 		</div>
