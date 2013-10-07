@@ -1,24 +1,35 @@
 window.BookListView = Backbone.View.extend({
 
+	events: {
+		"keyup .search-query": "search",
+		"keypress .search-query": "onkeypress"
+    },
+	
 	initialize: function() {
 		debug('Initializing Book View');
+		this.collection.bind("reset", this.render, this);
+		$(this.el).html(this.template());
 	},
 
 	render: function() {
-		var books = this.collection.models;
-		
-		var length = books.length;
-		var startPos = 0;
-		var endPos = length;
-		
-		$(this.el).html(this.template());
-		
-		for (var i = startPos; i < endPos; i++) {
-			$('.thumbnails', this.el).append(new BookListItemView({model: books[i]}).render().el);
-		}
-		
+		$('.thumbnails', this.el).empty();;
+		_.each(this.collection.models, function (book) {
+			$('.thumbnails', this.el).append(new BookListItemView({model:book}).render().el);
+		}, this);
 		return this;
 	},
+	
+	search: function () {
+		var key = $('#nav-search-input').val();
+		debug('search ' + key);
+		this.collection.findByTitle(key);
+	},
+	
+	onkeypress: function(event) {
+		if (event.keyCode == 13) {
+			event.preventDefault();
+		}
+	}
 });
 
 window.BookListItemView = Backbone.View.extend({

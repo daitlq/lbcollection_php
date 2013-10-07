@@ -30,6 +30,19 @@ window.BookCollection = Backbone.Collection.extend({
 
 	model: Book,
 
-	url: "api/index.php/books"
+	url: "api/index.php/books",
 
+	findByTitle: function(key) {
+		var url = (key == '') ? 'api/index.php/books' : "api/index.php/books/search/" + key;
+		debug('findByTitle: ' + key);
+		var self = this;
+		$.ajax({
+			url: url,
+			dataType: "json",
+			success: function(data) {
+				debug("search success: " + data.length);
+				self.reset(data);
+			}
+		});
+	}
 });

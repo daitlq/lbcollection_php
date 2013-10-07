@@ -50,11 +50,24 @@
 	font-size:14px;
 	color:#b2b6bf;
 }
+.btn-icon-control {
+	float: right;
+	margin-right: 5px;
+}
+.btn-icon-control a>[class*="icon-"] {
+	color: darkred;
+	text-decoration:none;
+}
+.btn-icon-control a>[class*="icon-"]:hover {
+	color: #0099FF;
+	text-decoration:none;
+}
 #nav-search{
 	position:absolute;
 	top:5px;
 	right:22px;
 	line-height:24px;
+	margin-right: 25px;
 }
 #nav-search .form-search{
 	margin-top:1px;
@@ -62,7 +75,7 @@
 #nav-search-input{
 	border-color:#6fb3e0;
 	border-width:1px;
-	width:120px;
+	width:180px;
 	height:18px!important;
 	border-radius:4px!important;
 	font-size:13px;
@@ -90,6 +103,7 @@
 	color:#6fb3e0;
 	font-size:14px;
 	line-height:24px;
+	margin-right: 5px;
 }
 
 #btn-scroll-up{

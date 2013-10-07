@@ -7,6 +7,7 @@ $app = new \Slim\Slim();
 
 $app->get('/books', 'getAllBooks');
 $app->get('/books/:id',	'getBook');
+$app->get('/books/search/:query', 'findByTitle');
 $app->post('/books', 'addBook');
 $app->put('/books/:id', 'updateBook');
 $app->delete('/books/:id',	'deleteBook');
@@ -36,6 +37,22 @@ function getBook($id) {
 		$book = $stmt->fetchObject();
 		$db = null;
 		echo json_encode($book); 
+	} catch(PDOException $e) {
+		echo '{"error":{"text":'. $e->getMessage() .'}}'; 
+	}
+}
+
+function findByTitle($query) {
+	$sql = "SELECT * FROM book WHERE UPPER(title) LIKE :query ORDER BY title";
+	try {
+		$db = getConnection();
+		$stmt = $db->prepare($sql);
+		$query = "%".$query."%";  
+		$stmt->bindParam("query", $query);
+		$stmt->execute();
+		$books = $stmt->fetchAll(PDO::FETCH_OBJ);
+		$db = null;
+		echo json_encode($books);
 	} catch(PDOException $e) {
 		echo '{"error":{"text":'. $e->getMessage() .'}}'; 
 	}
