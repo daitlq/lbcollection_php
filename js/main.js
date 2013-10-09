@@ -38,19 +38,14 @@ window.Router = Backbone.Router.extend({
 	},
 	
 	getListBook: function() {
-		if (!this.bookListView) {
-			var bookList = new BookCollection();
-			var self = this;
-			bookList.fetch({
-				success: function(books) {
-					self.bookListView = new BookListView({collection: books});
-					self.bookListView.render();
-					$("#main-content").html(self.bookListView.el);
-				}
-			});
-		}
-		else
-			$("#main-content").html(this.bookListView.el);
+		var bookList = new BookCollection();
+		var self = this;
+		bookList.fetch({
+			success: function(books) {
+				self.bookListView = new BookListView({collection: books});
+				$("#main-content").html(self.bookListView.render().el);
+			}
+		});
 	},
 	
 	getBook: function(id) {

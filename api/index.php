@@ -12,23 +12,33 @@ $app->post('/books', 'addBook');
 $app->put('/books/:id', 'updateBook');
 $app->delete('/books/:id',	'deleteBook');
 
+$app->get('/tags', 'getAllTags');
+
+$app->get('/booktag', 'getAllBookTag');
+$app->get('/booktag/:id', 'getBookTag');
+$app->post('/booktag', 'addBookTag');
+$app->put('/booktag/:id', 'updateBookTag');
+$app->delete('/booktag/:id', 'deleteBookTag');
+$app->get('/booktag/searchByBook/:id', 'findTagsByBook');
+//$app->get('/tagsofbook/:id', 'getTagsOfBook');
+
 $app->run();
 
 function getAllBooks() {
-	$sql = "select * FROM book";
+	$sql = "select * FROM bok_Book";
 	try {
 		$db = getConnection();
 		$stmt = $db->query($sql);  
-		$wines = $stmt->fetchAll(PDO::FETCH_OBJ);
+		$books = $stmt->fetchAll(PDO::FETCH_OBJ);
 		$db = null;
-		echo json_encode($wines);
+		echo json_encode($books);
 	} catch(PDOException $e) {
 		echo '{"error":{"text":'. $e->getMessage() .'}}'; 
 	}
 }
 
 function getBook($id) {
-	$sql = "SELECT * FROM book WHERE id=:id";
+	$sql = "SELECT * FROM bok_Book WHERE id=:id";
 	try {
 		$db = getConnection();
 		$stmt = $db->prepare($sql);  
@@ -43,7 +53,7 @@ function getBook($id) {
 }
 
 function findByTitle($query) {
-	$sql = "SELECT * FROM book WHERE UPPER(title) LIKE :query ORDER BY title";
+	$sql = "SELECT * FROM bok_Book WHERE UPPER(title) LIKE :query ORDER BY title";
 	try {
 		$db = getConnection();
 		$stmt = $db->prepare($sql);
@@ -62,12 +72,11 @@ function addBook() {
 	//error_log('addBook\n', 3, '/var/tmp/php.log');
 	$request = \Slim\Slim::getInstance()->request();
 	$book = json_decode($request->getBody());
-	$sql = "INSERT INTO book (title, category, author, publisher, language, publication_date, description) VALUES (:title, :category, :author, :publisher, :language, :publication_date, :description)";
+	$sql = "INSERT INTO bok_Book (title, author, publisher, language, publication_date, description) VALUES (:title, :author, :publisher, :language, :publication_date, :description)";
 	try {
 		$db = getConnection();
 		$stmt = $db->prepare($sql);  
 		$stmt->bindParam("title", $book->title);
-		$stmt->bindParam("category", $book->category);
 		$stmt->bindParam("author", $book->author);
 		$stmt->bindParam("publisher", $book->publisher);
 		$stmt->bindParam("language", $book->language);
@@ -86,12 +95,11 @@ function addBook() {
 function updateBook($id) {
 	$request = \Slim\Slim::getInstance()->request();
 	$book = json_decode($request->getBody());
-	$sql = "UPDATE book SET title=:title, category=:category, author=:author, publisher=:publisher, language=:language, publication_date=:publication_date, description=:description WHERE id=:id";
+	$sql = "UPDATE bok_Book SET title=:title, author=:author, publisher=:publisher, language=:language, publication_date=:publication_date, description=:description WHERE id=:id";
 	try {
 		$db = getConnection();
 		$stmt = $db->prepare($sql);  
 		$stmt->bindParam("title", $book->title);
-		$stmt->bindParam("category", $book->category);
 		$stmt->bindParam("author", $book->author);
 		$stmt->bindParam("publisher", $book->publisher);
 		$stmt->bindParam("language", $book->language);
@@ -107,7 +115,7 @@ function updateBook($id) {
 }
 
 function deleteBook($id) {
-	$sql = "DELETE FROM book WHERE id=:id";
+	$sql = "DELETE FROM bok_Book WHERE id=:id";
 	try {
 		$db = getConnection();
 		$stmt = $db->prepare($sql);  
@@ -117,6 +125,114 @@ function deleteBook($id) {
 		echo '{"success":{"id":'. $id .'}}';
 	} catch(PDOException $e) {
 		echo '{"error":{"text":'. $e->getMessage() .'}}';
+	}
+}
+
+function getAllTags() {
+	$sql = "select * FROM bok_Tag";
+	try {
+		$db = getConnection();
+		$stmt = $db->query($sql);  
+		$tags = $stmt->fetchAll(PDO::FETCH_OBJ);
+		$db = null;
+		echo json_encode($tags);
+	} catch(PDOException $e) {
+		echo '{"error":{"text":'. $e->getMessage() .'}}'; 
+	}
+}
+
+function getAllBookTag() {
+	$sql = "select bt.id, b.title, t.name FROM bok_Book b, bok_Tag t, bok_BookTag bt WHERE bt.tag_id = t.id AND bt.book_id = b.id";
+	try {
+		$db = getConnection();
+		$stmt = $db->query($sql);  
+		$bookTag = $stmt->fetchAll(PDO::FETCH_OBJ);
+		$db = null;
+		echo json_encode($bookTag);
+	} catch(PDOException $e) {
+		echo '{"error":{"text":'. $e->getMessage() .'}}'; 
+	}
+}
+
+function getBookTag($id) {
+	$sql = "SELECT * FROM bok_BookTag WHERE id=:id";
+	try {
+		$db = getConnection();
+		$stmt = $db->prepare($sql);  
+		$stmt->bindParam("id", $id);
+		$stmt->execute();
+		$bookTag = $stmt->fetchObject();
+		$db = null;
+		echo json_encode($bookTag); 
+	} catch(PDOException $e) {
+		echo '{"error":{"text":'. $e->getMessage() .'}}'; 
+	}
+}
+
+function addBookTag() {
+	//error_log('addBook\n', 3, '/var/tmp/php.log');
+	$request = \Slim\Slim::getInstance()->request();
+	$bookTag = json_decode($request->getBody());
+	$sql = "INSERT INTO bok_BookTag (book_id, tag_id) VALUES (:book_id, :tag_id)";
+	try {
+		$db = getConnection();
+		$stmt = $db->prepare($sql);  
+		$stmt->bindParam("book_id", $bookTag->book_id);
+		$stmt->bindParam("tag_id", $bookTag->tag_id);
+		$stmt->execute();
+		$bookTag->id = $db->lastInsertId();
+		$db = null;
+		echo json_encode($bookTag); 
+	} catch(PDOException $e) {
+		//error_log($e->getMessage(), 3, '/var/tmp/php.log');
+		echo '{"error":{"text":'. $e->getMessage() .'}}'; 
+	}
+}
+
+function updateBookTag($id) {
+	$request = \Slim\Slim::getInstance()->request();
+	$bookTag = json_decode($request->getBody());
+	$sql = "UPDATE bok_BookTag SET book_id=:book_id, tag_id=:tag_id WHERE id=:id";
+	try {
+		$db = getConnection();
+		$stmt = $db->prepare($sql);  
+		$stmt->bindParam("book_id", $bookTag->book_id);
+		$stmt->bindParam("tag_id", $bookTag->tag_id);
+		$stmt->bindParam("id", $id);
+		$stmt->execute();
+		$db = null;
+		echo json_encode($bookTag); 
+	} catch(PDOException $e) {
+		echo '{"error":{"text":'. $e->getMessage() .'}}'; 
+	}
+}
+
+function deleteBookTag($id) {
+	$sql = "DELETE FROM bok_BookTag WHERE id=:id";
+	try {
+		$db = getConnection();
+		$stmt = $db->prepare($sql);  
+		$stmt->bindParam("id", $id);
+		$stmt->execute();
+		$db = null;
+		echo '{"success":{"id":'. $id .'}}';
+	} catch(PDOException $e) {
+		echo '{"error":{"text":'. $e->getMessage() .'}}';
+	}
+}
+
+function findTagsByBook($id) {
+	$sql = "SELECT bt.id, bt.tag_id, b.title, t.name FROM bok_Book b, bok_Tag t, bok_BookTag bt WHERE bt.book_id=:id AND bt.tag_id = t.id AND bt.book_id = b.id";
+	try {
+		$db = getConnection();
+		$stmt = $db->prepare($sql);  
+		$stmt->bindParam("id", $id);
+		$stmt->execute();
+		$bookTags = $stmt->fetchAll(PDO::FETCH_OBJ);
+		$db = null;
+		echo json_encode($bookTags); 
+	} catch(PDOException $e) {
+		echo '{"error":{"text":'. $e->getMessage() .'}}'; 
 	}
 }
 
