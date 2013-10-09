@@ -13,12 +13,16 @@ window.BookEditView = Backbone.View.extend({
 			this.bookTags.bind("reset", this.loadSelectedTags, this);
 		}
 		this.bChangeTag = false;
+		this.bChangeDescription = false;
 	},
 
 	render: function() {
+		var self = this;
 		$(this.el).html(this.template(this.model.toJSON()));
 		//rich text editor
-		$('.ckeditor', this.el).ckeditor();
+		$('.ckeditor', this.el).ckeditor(function() {
+			this.on( 'change', function(e) { self.bChangeDescription = true; });
+		});
 		
 		this.loadAllTags();
 		return this;
@@ -72,6 +76,11 @@ window.BookEditView = Backbone.View.extend({
     },
 
 	updateBook: function() {
+		if (this.bChangeDescription) {
+			var change = {};
+			change["description"] = CKEDITOR.instances['description'].getData();
+			this.model.set(change);
+		}
 		var self = this;
 		this.model.save(null, {
 			success: function(model) {
@@ -89,9 +98,7 @@ window.BookEditView = Backbone.View.extend({
 	},
 	
 	updateBookTag: function(model) {
-		var self = this;
 		var arrBookTagID = $("#tag", this.el).val();
-		
 		// remove old BookTags.
 		if (this.model.id != null) {
 			var bookTagModels = this.bookTags.models;
@@ -101,7 +108,6 @@ window.BookEditView = Backbone.View.extend({
 		}
 		// add new BookTags.
 		_.each(arrBookTagID, function(bookTagID) {
-			//console.log(bookTagID);
 			var bookTag = new BookTag();
 			bookTag.set({book_id: model.id, tag_id: bookTagID});
 			bookTag.save();
